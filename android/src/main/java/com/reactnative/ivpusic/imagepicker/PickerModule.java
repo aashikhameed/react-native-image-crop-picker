@@ -67,6 +67,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
     private static final String E_ERROR_WHILE_CLEANING_FILES = "E_ERROR_WHILE_CLEANING_FILES";
 
     private String mediaType = "any";
+    private String pathToSave = '';
     private boolean multiple = false;
     private boolean includeBase64 = false;
     private boolean includeExif = false;
@@ -137,6 +138,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
         enableRotationGesture = options.hasKey("enableRotationGesture") && options.getBoolean("enableRotationGesture");
         disableCropperColorSetters = options.hasKey("disableCropperColorSetters") && options.getBoolean("disableCropperColorSetters");
         useFrontCamera = options.hasKey("useFrontCamera") && options.getBoolean("useFrontCamera");
+        pathToSave = options.hasKey("pathToSave") ? options.getString("pathToSave") : this.reactContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         this.options = options;
     }
 
@@ -784,7 +786,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
     private File createImageFile() throws IOException {
 
         String imageFileName = "image-" + UUID.randomUUID().toString();
-        File path = this.reactContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File path = new File(pathToSave);
 
         if (!path.exists() && !path.isDirectory()) {
             path.mkdirs();
@@ -802,7 +804,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
     private File createVideoFile() throws IOException {
 
         String videoFileName = "video-" + UUID.randomUUID().toString();
-        File path = this.reactContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File path = new File(pathToSave);
 
         if (!path.exists() && !path.isDirectory()) {
             path.mkdirs();
